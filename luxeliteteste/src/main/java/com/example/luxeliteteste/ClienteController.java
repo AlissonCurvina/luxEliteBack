@@ -23,7 +23,7 @@ public class ClienteController {
     @Autowired
     ClienteRepository bd;
 
-    @PostMapping("/api/cliente") //completo
+    @PostMapping("/api/cliente") //completoo
     public ResponseEntity<Map<String, Object>> gravar(@RequestBody Cliente obj) {
     bd.save(obj); //salva o cliente no banco de dados
     Map<String, Object> response = new HashMap<>();
