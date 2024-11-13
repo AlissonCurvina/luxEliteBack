@@ -17,51 +17,46 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = "*") 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class ClienteController {
     @Autowired
     ClienteRepository bd;
 
-    @PostMapping("/api/cliente") //completoo
+    @PostMapping("/api/cliente") //completo
     public ResponseEntity<Map<String, Object>> gravar(@RequestBody Cliente obj) {
-    bd.save(obj); //salva o cliente no banco de dados
+    bd.save(obj); 
     Map<String, Object> response = new HashMap<>();
     response.put("message", "O cliente " + obj.getNome() + " foi salvo corretamente!");
-    response.put("cliente", obj);  //retorna também os dados do cliente salvo
-    return ResponseEntity.ok(response);  //retorna a resposta com status 200 OK
+    response.put("cliente", obj);
+    return ResponseEntity.ok(response); 
     }
 
 
-    @PutMapping("/api/cliente")  //incompleto, deu erro de cors
-    public ResponseEntity<String> alterar(@RequestBody Cliente obj){
-        Optional<Cliente> clienteExistente = bd.findByCpf(obj.getCpf());  // Procurando o cliente pelo CPF
-    
-        if (!clienteExistente.isPresent()) {
-            // Se o cliente não for encontrado, retornamos erro
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado!");
-        }
-    
-        // Atualizando os campos do cliente com os dados recebidos
-        Cliente clienteAtualizado = clienteExistente.get();
-        clienteAtualizado.setNome(obj.getNome());
-        clienteAtualizado.setSobrenome(obj.getSobrenome());
-        clienteAtualizado.setCpf(obj.getCpf());  // Em geral, o CPF não é alterado, mas se for o caso
-        clienteAtualizado.setTelefone(obj.getTelefone());
-        clienteAtualizado.setEmail(obj.getEmail());
-        clienteAtualizado.setSenha(obj.getSenha());
-        clienteAtualizado.setCep(obj.getCep());
-        clienteAtualizado.setRua(obj.getRua());
-        clienteAtualizado.setCidade(obj.getCidade());
-        clienteAtualizado.setEstado(obj.getEstado());
-        clienteAtualizado.setComplemento(obj.getComplemento());
-        
-        // Salvando as alterações no banco de dados
-        bd.save(clienteAtualizado);
-    
-        // Retornando uma resposta de sucesso
-        return ResponseEntity.ok("O cliente " + clienteAtualizado.getNome() + " foi alterado corretamente!");
+    @PutMapping("/api/cliente/{cpf}") //completo
+    public ResponseEntity<String> alterar(@PathVariable String cpf, @RequestBody Cliente obj) {
+    Optional<Cliente> clienteExistente = bd.findByCpf(cpf);
+
+    if (!clienteExistente.isPresent()) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado!");
     }
+
+    Cliente clienteAtualizado = clienteExistente.get();
+    clienteAtualizado.setNome(obj.getNome());
+    clienteAtualizado.setSobrenome(obj.getSobrenome());
+    clienteAtualizado.setTelefone(obj.getTelefone());
+    clienteAtualizado.setEmail(obj.getEmail());
+    clienteAtualizado.setCep(obj.getCep());
+    clienteAtualizado.setRua(obj.getRua());
+    clienteAtualizado.setCidade(obj.getCidade());
+    clienteAtualizado.setEstado(obj.getEstado());
+    clienteAtualizado.setComplemento(obj.getComplemento());
+
+    bd.save(clienteAtualizado);
+
+    return ResponseEntity.ok("Cliente atualizado com sucesso!");
+}
+
     
     @GetMapping("/api/cliente/{cpf}") //completo
     public Cliente carregar(@PathVariable String cpf) {
@@ -73,11 +68,21 @@ public class ClienteController {
         }
     }
 
-    @DeleteMapping("/api/cliente/{codigo}")
-    public String remover(@PathVariable int codigo){
-        bd.deleteById(codigo);
-        return "Registro "+ codigo + " removido com suceso!";
+    @DeleteMapping("/api/cliente/{cpf}") //completo
+    public ResponseEntity<Map<String, String>> remover(@PathVariable String cpf) {
+    Optional<Cliente> cliente = bd.findByCpf(cpf);
+    Map<String, String> response = new HashMap<>();
+
+        if (cliente.isPresent()) {
+            bd.delete(cliente.get());
+            response.put("message", "Cliente com CPF " + cpf + " removido com sucesso!");
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("message", "Cliente com CPF " + cpf + " não encontrado!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
     }
+
 
     @GetMapping("/api/clientes")
     public List<Cliente> listar(){
