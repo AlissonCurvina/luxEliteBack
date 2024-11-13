@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 
@@ -21,5 +22,10 @@ JpaRepository<Cliente,Integer> {
     Optional<Cliente> findByCpf(String cpf);
 
     Optional<Cliente> findByNome(String nome);
+
+    @Query("SELECT c FROM Cliente c WHERE c.email = :email AND c.senha = :senha")
+    Optional<Cliente> findByEmailAndSenha(@Param("email") String email, @Param("senha") String senha);
+
+
 
 }

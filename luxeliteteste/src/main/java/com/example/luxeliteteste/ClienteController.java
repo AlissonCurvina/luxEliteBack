@@ -1,7 +1,6 @@
 package com.example.luxeliteteste;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -84,21 +83,21 @@ public class ClienteController {
     }
 
 
-    @GetMapping("/api/clientes")
-    public List<Cliente> listar(){
-        return bd.findAll();
-    }
+    @PostMapping("/api/cliente/login") //completo
+    public ResponseEntity<?> fazerLogin(@RequestBody Cliente obj) {
+    Optional<Cliente> cliente = bd.findByEmailAndSenha(obj.getEmail(), obj.getSenha());
 
-    @PostMapping("/api/cliente/login")
-    public Cliente fazerLogin(@RequestBody Cliente obj){
-        Optional<Cliente> retorno = 
-            bd.login(obj.getEmail(), obj.getSenha());
-        if(retorno.isPresent()){
-            return retorno.get();
+        if (cliente.isPresent()) {
+            return ResponseEntity.ok(cliente.get()); // Login bem-sucedido, retorna o cliente
         } else {
-            return null;
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário ou senha inválidos");
         }
     }
+
+
+
+
+
 
     @PostMapping("/api/cliente/recupera")
     public Cliente recuperarSenha(@RequestBody Cliente obj){
