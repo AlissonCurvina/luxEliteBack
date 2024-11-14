@@ -94,20 +94,20 @@ public class ClienteController {
         }
     }
 
-
-
-
-
-
+    //incompleto
     @PostMapping("/api/cliente/recupera")
-    public Cliente recuperarSenha(@RequestBody Cliente obj){
-        Optional<Cliente> retorno = 
-            bd.recuperaSenha(obj.getEmail());
-        if(retorno.isPresent()){
-            return retorno.get();
+    public ResponseEntity<Map<String, String>> recuperarSenha(@RequestBody Cliente obj) {
+    Optional<Cliente> retorno = bd.recuperaSenha(obj.getEmail());
+    Map<String, String> response = new HashMap<>();
+        if (retorno.isPresent()) {
+            response.put("message", "Instruções para recuperação de senha foram enviadas para o e-mail fornecido.");
+            return ResponseEntity.ok(response);
         } else {
-            return null;
+            response.put("message", "E-mail não encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }
+
+
 
 }
