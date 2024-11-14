@@ -94,8 +94,8 @@ public class ClienteController {
         }
     }
 
-    //incompleto
-    @PostMapping("/api/cliente/recupera")
+    
+    @PostMapping("/api/cliente/recupera") //completo
     public ResponseEntity<Map<String, String>> recuperarSenha(@RequestBody Cliente obj) {
     Optional<Cliente> retorno = bd.recuperaSenha(obj.getEmail());
     Map<String, String> response = new HashMap<>();
