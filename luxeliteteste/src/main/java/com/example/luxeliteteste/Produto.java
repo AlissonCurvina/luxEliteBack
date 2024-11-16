@@ -10,7 +10,7 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     @Column(name = "product_id")
-    private Long id;
+    private Integer id;
 
     @JsonProperty("nome")
     @Column(name = "product_name")
@@ -34,7 +34,7 @@ public class Produto {
 
     public Produto() {}
     public Produto(
-        int id, String nome, String categoria, String descricao, String marca, Double preco
+        Integer id, String nome, String categoria, String descricao, String marca, Double preco
     ) {
         this.setNome(nome);
         this.setCategoria(categoria);
@@ -43,7 +43,7 @@ public class Produto {
         this.setPreco(preco);
     }
 
-    public Long getId() {
+    public Integer getId() {
         return this.id;
     }
 

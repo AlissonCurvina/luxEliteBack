@@ -19,29 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-public class ProdutoController {
+public class PacoteController {
     @Autowired
-    ProdutoRepository bd;
+    PacoteRepository bd;
 
-    @GetMapping("/api/produto/{id}")
-    public Produto carregar(@PathVariable int id) {
-        Optional<Produto> obj = bd.findById(id);
+    @GetMapping("/api/pacote/{id}")
+    public Pacote carregar(@PathVariable int id) {
+        Optional<Pacote> obj = bd.findById(id);
         if (obj.isPresent()) {
             return obj.get();
         } else {
             return null;
-        }
-    }
-
-    @DeleteMapping("/api/produto/deletar/{id}")
-    public ResponseEntity<String> deletar(@PathVariable int id) {
-        Optional<Produto> obj = bd.findById(id);
-        if(obj.isPresent()) {
-            bd.deleteById(id);
-            return ResponseEntity.ok("Produto deletado com sucesso!");
-        }
-        else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado!");
         }
     }
 }

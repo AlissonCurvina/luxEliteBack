@@ -9,5 +9,4 @@ public class LuxelitetesteApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(LuxelitetesteApplication.class, args);
 	}
-
 }
