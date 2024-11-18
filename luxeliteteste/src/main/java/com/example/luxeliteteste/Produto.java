@@ -2,6 +2,8 @@ package com.example.luxeliteteste;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -31,6 +33,19 @@ public class Produto {
     @JsonProperty("preco")
     @Column(name = "product_price")
     private Double preco;
+
+    @ManyToMany
+    @JoinTable(
+        name = "pacote_produto",
+        joinColumns = @JoinColumn(name = "package_product_product_id"),
+        inverseJoinColumns = @JoinColumn(name = "package_product_package_id")
+    )
+
+    @OneToOne(mappedBy = "produto") // Relacionamento bidirecional
+    private ProductPhoto productPhoto;
+    private String photo;  // Relacionamento com a foto
+
+    private List<Pacote> pacotes;
 
     public Produto() {}
     public Produto(
@@ -85,5 +100,26 @@ public class Produto {
 
     public Double getPreco() {
         return this.preco;
+    }
+
+    public String getPhoto() {
+        return this.photo;
+    }
+
+    public ProductPhoto getProductPhoto() {
+        return this.productPhoto;
+    }
+
+    public void setPhoto(String photoUrl) {
+        this.photo = photoUrl;
+    }
+
+    @JsonProperty("listaPacotes")
+    public List<String> getPacotesNomes() {
+        if (pacotes != null) {
+            return pacotes.stream().map(Pacote::getNome).toList();
+        }
+
+        return List.of();
     }
 }

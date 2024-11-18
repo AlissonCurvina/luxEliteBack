@@ -1,6 +1,7 @@
 package com.example.luxeliteteste;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -23,6 +24,9 @@ public class Pacote {
     @JsonProperty("preco")
     @Column(name = "package_price")
     private Double preco;
+
+    @ManyToMany(mappedBy = "pacotes")
+    private List<Produto> produtos;
 
     public Pacote() {}
     public Pacote(
@@ -61,5 +65,13 @@ public class Pacote {
 
     public Double getPreco() {
         return this.preco;
+    }
+    
+    public void setProdutos(List<Produto> produtos) {
+        this.produtos = produtos;
+    }
+
+    public List<Produto> getProdutos() {
+        return this.produtos;
     }
 }
