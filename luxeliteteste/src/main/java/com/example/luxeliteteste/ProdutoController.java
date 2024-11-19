@@ -25,13 +25,10 @@ public class ProdutoController {
 
     @GetMapping("/api/produto/{id}")
     public ResponseEntity<Produto> carregar(@PathVariable int id) {
-        Optional<Produto> obj = bd.findByIdWithPhoto(id);
+        Optional<Produto> obj = bd.findById(id);
         if (obj.isPresent()) {
             Produto produto = obj.get();
-            // Se a foto estiver presente, adicione o link da foto diretamente na resposta
-            if (produto.getPhoto() != null) {
-                produto.setPhoto(produto.getProductPhoto().getProductPhotoUrl());
-            }
+            // Foto foi removida, então esta parte foi eliminada
             return ResponseEntity.ok(produto);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

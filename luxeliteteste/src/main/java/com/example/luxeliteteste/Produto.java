@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @Column(name = "product_id")
     private Integer id;
 
@@ -37,23 +36,22 @@ public class Produto {
     @ManyToMany
     @JoinTable(
         name = "pacote_produto",
-        joinColumns = @JoinColumn(name = "package_product_product_id"),
-        inverseJoinColumns = @JoinColumn(name = "package_product_package_id")
+        joinColumns = @JoinColumn(name = "package_product_product_id"), // Coluna que referencia a tabela Produto
+        inverseJoinColumns = @JoinColumn(name = "package_product_package_id") // Coluna que referencia a tabela Pacote
     )
-
-    @OneToOne(mappedBy = "produto") // Relacionamento bidirecional
-    private ProductPhoto productPhoto;
-    private String photo;  // Relacionamento com a foto
-
     private List<Pacote> pacotes;
 
+    @OneToOne(mappedBy = "produto", fetch = FetchType.EAGER)
+    private ProdutoFoto produtoFoto;
+
     public Produto() {}
+
     public Produto(
         Integer id, String nome, String categoria, String descricao, String marca, Double preco
     ) {
         this.setNome(nome);
         this.setCategoria(categoria);
-        this.setCategoria(marca);
+        this.setMarca(marca);
         this.setDescricao(descricao);
         this.setPreco(preco);
     }
@@ -102,18 +100,6 @@ public class Produto {
         return this.preco;
     }
 
-    public String getPhoto() {
-        return this.photo;
-    }
-
-    public ProductPhoto getProductPhoto() {
-        return this.productPhoto;
-    }
-
-    public void setPhoto(String photoUrl) {
-        this.photo = photoUrl;
-    }
-
     @JsonProperty("listaPacotes")
     public List<String> getPacotesNomes() {
         if (pacotes != null) {
@@ -121,5 +107,15 @@ public class Produto {
         }
 
         return List.of();
+    }
+
+    @JsonProperty("foto_url")
+    public String getFotoUrl() {
+        if (produtoFoto != null) {
+            return produtoFoto.getFotoUrl();
+        }
+        else {
+            return null;
+        }
     }
 }
