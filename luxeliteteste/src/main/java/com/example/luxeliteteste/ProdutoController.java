@@ -35,6 +35,15 @@ public class ProdutoController {
         }
     }
 
+    @GetMapping("/api/produto/{id}/pacote-ids")
+    public ResponseEntity<List<Integer>> listarPacoteIdsPorProduto(@PathVariable int id) {
+        List<Integer> pacoteIds = bd.findPacoteIdsByProdutoId(id);
+        if (pacoteIds.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(pacoteIds);
+    }
+
     @DeleteMapping("/api/produto/deletar/{id}")
     public ResponseEntity<String> deletar(@PathVariable int id) {
         Optional<Produto> obj = bd.findById(id);

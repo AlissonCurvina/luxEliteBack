@@ -1,5 +1,6 @@
 package com.example.luxeliteteste;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,6 +17,9 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
 
     @Query("SELECT p FROM Produto p JOIN FETCH p.pacotes WHERE p.id = :id")
     Optional<Produto> findByIdWithPacotes(@Param("id") int id);
+
+    @Query("SELECT p.id FROM Pacote p JOIN p.produtos prod WHERE prod.id = :id")
+    List<Integer> findPacoteIdsByProdutoId(@Param("id") int produtoId);
 
     // Removido método relacionado à foto
 }

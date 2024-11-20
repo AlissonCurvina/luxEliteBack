@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PacoteRepository extends JpaRepository<Pacote, Integer> {
     
-    Optional<Pacote> findById(int id);
+    Optional<Pacote> findById(Integer id);
 }
