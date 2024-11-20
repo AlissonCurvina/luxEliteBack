@@ -1,4 +1,4 @@
-package com.example.luxeliteteste;
+package com.example.luxeliteteste.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

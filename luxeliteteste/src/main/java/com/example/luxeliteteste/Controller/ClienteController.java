@@ -1,4 +1,4 @@
-package com.example.luxeliteteste;
+package com.example.luxeliteteste.Controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.luxeliteteste.Model.Cliente;
+import com.example.luxeliteteste.Repository.ClienteRepository;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
