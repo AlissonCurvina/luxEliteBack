@@ -144,7 +144,4 @@ public class Cliente {
     public void setComplemento(String complemento) {
         this.complemento = complemento;
     }
-    
-
-    
 }

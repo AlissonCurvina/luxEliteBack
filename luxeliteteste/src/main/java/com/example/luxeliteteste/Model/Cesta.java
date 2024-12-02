@@ -10,18 +10,18 @@ public class Cesta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String numeroPedido; // traduzido de "requestNumber"
-    private Double valorTotal;   // traduzido de "totalAmount"
+    private String numeroPedido; 
+    private Double valorTotal;
+    private Integer clientId;
 
     @ElementCollection
     @CollectionTable(name = "itens_cesta", joinColumns = @JoinColumn(name = "cesta_id"))
-    private List<CestaItem> itens; // traduzido de "items"
+    private List<CestaItem> itens; 
 
     public Cesta() {
         this.numeroPedido = UUID.randomUUID().toString();
     }
 
-    // Getters e Setters
     public Long getId() { 
         return id; 
     }
@@ -42,5 +42,13 @@ public class Cesta {
     }
     public void setItens(List<CestaItem> itens) { 
         this.itens = itens; 
+    }
+
+    public Integer getClientId() {
+        return this.clientId;
+    }
+
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
     }
 }
